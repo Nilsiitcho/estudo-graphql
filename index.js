@@ -48,7 +48,8 @@ const typeDefs = gql`
         usuarioLoagado: Usuario,
         produtoEmDestaque: Produto,
         numerosMegaSena: [Int!]!,
-        usuarios: [Usuario]
+        usuarios: [Usuario],
+        usuario(id: ID) : Usuario
     }
 `
 
@@ -95,6 +96,10 @@ const resolvers = {
         },
         usuarios() {
             return usuarios;
+        },
+        usuario(_, {id}) {
+            const sels = usuarios.filter(u => u.id == id)
+            return sels ? sels[0] : null
         }
     }
 }
