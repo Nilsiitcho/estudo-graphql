@@ -12,11 +12,20 @@ const typeDefs = gql`
         vip: Boolean
     }
 
+    type Produto {
+        id: ID,
+        nome: String!,
+        preco: Float!,
+        desconto: Float,
+        precoComDesconto: Float
+    }
+
     #Pontos de entrada da API!
     type Query {
         ola: String!
         horaAtual: Date!
-        usuarioLoagado: Usuario
+        usuarioLoagado: Usuario,
+        produtoEmDestaque: Produto
     }
 `
 
@@ -24,6 +33,11 @@ const resolvers = {
     Usuario: {
         salario(usuario) {
             return usuario.salario_real
+        }
+    },
+    Produto: {
+        precoComDesconto(produto){
+            return produto.desconto ? produto.preco - (produto.preco * produto.desconto) : produto.preco
         }
     },
     Query: {
@@ -41,6 +55,14 @@ const resolvers = {
                 idade: 23,
                 salario_real: 1234.56,
                 vip: true
+            }
+        },
+        produtoEmDestaque() {
+            return {
+                id: 1,
+                nome: 'Macbook Pro 17',
+                preco: 8000.00,
+                desconto: 0.20
             }
         }
     }
